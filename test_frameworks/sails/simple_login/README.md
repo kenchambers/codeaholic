@@ -16,12 +16,12 @@ point your terminal to a directory you want to install sails into
 
 navigate to your directory in the terminal and type:
 
-`
+```terminal
 brew install node
 npm install sails -g
 
 sails new testProject
-`
+```
 
 This will populate your folder with a sails boiler plate which will include an entire folder tree of controllers/models and such
 
