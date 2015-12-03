@@ -5,7 +5,7 @@ a [Sails](http://sailsjs.org) application
 
 ### NOTES:
 
-#### Sales setup is easy
+#### Sails setup is easy!
 
 point your terminal to a directory you want to install sails into
 
@@ -27,7 +27,7 @@ This will populate your folder with a sails boiler plate which will include an e
 
 ### Simple login
 
-##### Users controller:
+#### Users controller:
 
 type this in the terminal:
 
@@ -91,23 +91,119 @@ module.exports = {
 - simply create a view inside of `/views` and name it
 
 ```javascript
-
-
 module.exports.routes = {
 
   '/': {
     view: 'homepage'
   },
-
+  // renders view, points towards *.ejs inside of /views
   'get /login': {
     view: 'login'
   },
-
+  //posts directly to login function in users controller
   'post /login':
       'UserController.login'
-
-
-
 };
+
+```
+
+#### Users model:
+
+type this in the terminal:
+
+```
+$ sails generate model <model name> [attribute1:type1, attribute2:type2 ... ]
+
+```
+
+for example lets generate a model for user with **name/email/password:** :
+
+type this in the terminal:
+```
+$ sails generate model User name:string email:string password:string
+```
+
+this command will generate the following pre formatted model:
+
+```javascript
+/**
+* User.js
+*
+* @description :: TODO: You might write a short summary of how this model works and what it represents here.
+* @docs        :: http://sailsjs.org/#!documentation/models
+*/
+
+module.exports = {
+
+  attributes: {
+
+    name : { type: 'string' },
+
+    email : { type: 'string' },
+
+    password : { type: 'string' }
+  }
+};
+
+```
+
+#### Tests
+
+sails uses ![mocha](http://mochajs.org/) to run its Server-side tests.
+
+Our first step  a folder structure inside the `/api` folder
+
+```javascript
+./myApp
+├── api
+├── assets
+├── ...
+├── test
+│  ├── unit
+│  │  ├── controllers
+│  │  │  └── UsersController.test.js
+│  │  ├── models
+│  │  │  └── Users.test.js
+│  │  └── ...
+│  ├── fixtures
+│  ├── ...
+│  ├── bootstrap.test.js
+│  └── mocha.opts
+└── views
+
+```
+#### bootstrap.test.js
+
+Now that we have our folder schema for tests we need to plug in sails via `bootstrap.test.js`
+
+**this is where you can load your fixtures for tests (see below)**
+
+_This file is useful when you want to execute some code before and after running your tests(e.g. lifting and lowering your sails application). Since your models are converted to waterline collections on lift, it is necessary to lift your sailsApp before trying to test them (This applies similarly to controllers and other parts of your app, so be sure to call this file first)._
+
+
+```javascript
+
+var Sails = require('sails'),
+  sails;
+
+before(function(done) {
+
+  // Increase the Mocha timeout so that Sails has enough time to lift.
+  this.timeout(5000);
+
+  Sails.lift({
+    // configuration for testing purposes
+  }, function(err, server) {
+    sails = server;
+    if (err) return done(err);
+    // here you can load fixtures, etc.
+    done(err, sails);
+  });
+});
+
+after(function(done) {
+  // here you can clear fixtures, etc.
+  Sails.lower(done);
+});
 
 ```
