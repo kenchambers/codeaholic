@@ -6,6 +6,10 @@
  */
 
 module.exports = {
-	
-};
 
+		login: function() {
+			console.log('chickens')
+
+}
+
+};
