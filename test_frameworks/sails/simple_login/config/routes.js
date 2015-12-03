@@ -37,7 +37,7 @@ module.exports.routes = {
   },
 
   'get /login': {
-    view: 'index'
+    view: 'login'
   },
 
   'post /login':
